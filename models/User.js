@@ -3,7 +3,12 @@ const Thought = require('./Thought');
 
 const userSchema = new Schema(
     {
-
+        username: {
+            type: String,
+            unique: true,
+            required: true,
+            trim: true,
+        },
     }
 );
 
