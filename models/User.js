@@ -13,10 +13,21 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true,
-            validate: [ isEmail, 'invalid email' ]
+            validate: [isEmail, 'invalid email']
         },
-        
-    }
+        thoughts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Thought',
+            }
+        ],
+        friends: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+            }
+        ],
+    },
 );
 
 const User = model('user', userSchema);
