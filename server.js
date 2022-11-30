@@ -14,14 +14,6 @@ app.use(express.static('public'));
 
 app.use(routes);
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017',
-    {
-        useNewUrlParser: true,
-        useFindAndModify: false,
-        useUnifiedTopology: true
-    }
-)
-
-mongoose.set('debug', true);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017')
 
 app.listen(PORT, () => console.log(`API server running on port ${PORT}!`))
