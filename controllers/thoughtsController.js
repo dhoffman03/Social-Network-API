@@ -8,9 +8,22 @@ module.exports = {
             .then(thoughtData => res.json(thoughtData))
             .catch((err) => res.status(500).json(err));
     },
-    // Create a new thought
+    // Create a new thought for user
     createThought(req, res) {
-
+        Thought.create(req.body)
+            .then(({ _id }) => {
+                return User.findOneAndUpdate(
+                    { _id: req.body.userId },
+                    { $push: { thoughts: _id } },
+                    { new: true }
+                );
+            })
+            .then((user) =>
+                !user
+                    ? res.status(404).json({ message: 'Thought created but no user with this id!' })
+                    : res.json({ message: 'Thought successfully created!' })
+            )
+            .catch((err) => res.status(500).json(err));
     },
     // /api/users/:thoughtId
     // Get a single thought
