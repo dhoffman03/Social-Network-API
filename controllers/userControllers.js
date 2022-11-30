@@ -1,21 +1,21 @@
-const { User } = require('../models');
+const User  = require('../models/User');
 
 module.exports = {
     // /api/users
-    // GET all users
+    // Get all users
     getUsers(req, res) {
         User.find({})
             .then(userData => res.json(userData))
             .catch((err) => res.status(500).json(err));
     },
-    // POST route to create new user
+    // Create new user
     createUser(req, res) {
         User.create(req.body)
             .then(userData => res.json(userData))
             .catch((err) => res.status(500).json(err));
     },
     // /api/:userId
-    // GET a single user
+    // Get a single user
     getUserById(req, res) {
         User.findOne({ _id: req.params.userId })
             .select('-__v')
@@ -24,7 +24,7 @@ module.exports = {
             )
             .catch((err) => res.status(500).json(err));
     },
-    // PUT route to update current user
+    // Update current user
     updateUser(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
