@@ -1,21 +1,11 @@
-const User = require('../models/User');
+const User = require('../models');
 
 module.exports = {
     // /api/users
     // Get all users
     getUsers(req, res) {
         User.find({})
-            .populate({
-                path: 'thoughts',
-                select: '-__v'
-            })
-            .populate({
-                path: 'friends',
-                select: '-__v'
-            })
-            .select('-__v')
-            .sort({ _id: -1 })
-            .then(userData => res.json(userData))
+            .then((userData) => res.json(userData))
             .catch((err) => res.status(500).json(err));
     },
     // Create new user
@@ -28,14 +18,6 @@ module.exports = {
     // Get a single user
     getUserById(req, res) {
         User.findOne({ _id: req.params.userId })
-            .populate({
-                path: 'thoughts',
-                select: '-__v'
-            })
-            .populate({
-                path: 'friends',
-                select: '-__v'
-            })
             .select('-__v')
             .then((userData) =>
                 !userData
@@ -85,6 +67,16 @@ module.exports = {
     },
     // Delete a friend
     deleteFriend(req, res) {
-
+        User.findOneAndUpdate(
+            { _id: req.params.id },
+            { $pull: { friends: req.body.friendId } },
+            { new: true }
+        )
+            .then((userData) =>
+                !userData
+                    ? res.status(404).json({ message: 'No user with that ID!' })
+                    : res.json(userData)
+            )
+            .catch((err) => res.status(500).json(err));
     },
 }
