@@ -1,4 +1,4 @@
-const User  = require('../models/User');
+const User = require('../models/User');
 
 module.exports = {
     // /api/users
@@ -20,7 +20,9 @@ module.exports = {
         User.findOne({ _id: req.params.userId })
             .select('-__v')
             .then((userData) =>
-                !userData ? res.status(404).json({ message: 'No user with that ID!' }) : res.json(userData)
+                !userData
+                    ? res.status(404).json({ message: 'No user with that ID!' })
+                    : res.json(userData)
             )
             .catch((err) => res.status(500).json(err));
     },
@@ -34,14 +36,18 @@ module.exports = {
                 runValidators: true,
             })
             .then((userData) =>
-                !userData ? res.status(404).json({ message: 'No user with that ID!' }) : res.json(userData))
+                !userData
+                    ? res.status(404).json({ message: 'No user with that ID!' })
+                    : res.json(userData))
             .catch((err) => res.status(500).json(err));
     },
     // Delete a user
     deleteUser(req, res) {
         User.findOneAndDelete({ _id: req.params.userId })
             .then((userData) =>
-                !userData ? res.status(404).json({ message: 'No user with that ID!' }) : res.json(userData))
+                !userData
+                    ? res.status(404).json({ message: 'No user with that ID!' })
+                    : res.json(userData))
             .catch((err) => res.status(500).json(err));
     },
 }
